@@ -27,7 +27,7 @@ export function Expression(exp:string){
             throw new Error(`Unexpected ${char}`);
         }
 
-        if(!/[0-9]+/.test(prev)){
+        if(!/[0-9\s]+/.test(prev)){
             // - negative symbol
             // + positive symbol
             if(char === '-' || char === '+'){
@@ -37,18 +37,18 @@ export function Expression(exp:string){
 
         if(char === '+' || char === '-'){
             while(TRUE){
-                const s = symbols.shift();
-                if(s === undefined)break;
-                if(s === '('){
-                    symbols.unshift('(');
-                    break;
-                }
+                if(symbols[0] === '(' || symbols.length === 0)break;
+                const s = symbols.shift() as string;
                 operant.push(s);
             }
             symbols.unshift(char);
             continue;
         }
         if(char === '*' || char === '/'){
+            if(symbols[0] === char){
+                const s = symbols.shift() as string;
+                operant.push(s);
+            }
             symbols.unshift(char);
             continue;
         }
@@ -57,11 +57,11 @@ export function Expression(exp:string){
             continue;
         }
         if(char === ')'){
-            do{
+            while(TRUE){
                 const s = symbols.shift() as string;
                 if(s === '(')break;
                 operant.push(s);
-            }while(TRUE);
+            }
             continue;
         }
     }
