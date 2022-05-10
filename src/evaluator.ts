@@ -1,35 +1,34 @@
-import {TRUE,isOp} from './constant';
+import {TRUE,isOp, Token, PLUS, MINUS, TIMES, DIVIDE, isStr, convert} from './constant';
 
-export function Evaluator(operant:string[]){
+export function Evaluator(tokens:Token[]){
     const result = [];
     let i=0;
     while(TRUE){
-        const op = operant[i];
+        const token = tokens[i];
         i = i + 1;
-        if(op === undefined)break;
-        if(isOp(op)){
-            let op1 = result.shift() as number;
-            let op2 = result.shift() as number;
-            op1 = Number(op1);
-            op2 = Number(op2);
-            if(op === '+'){
+        if(token === undefined)break;
+        if(isOp(token)){
+            let op1 = result.shift() as any;
+            let op2 = result.shift() as any;
+            op1 = convert(op1);
+            op2 = convert(op2);
+            switch(token.symbol){
+            case PLUS:
                 result.unshift(op2+op1);
-                continue;
-            }
-            if(op === '-'){
+                break;
+            case MINUS:
                 result.unshift(op2-op1);
-                continue;
-            }
-            if(op === '*'){
+                break;
+            case TIMES:
                 result.unshift(op2*op1);
-                continue;
-            }
-            if(op === '/'){
+                break;
+            case DIVIDE:
                 result.unshift(op2/op1);
-                continue;
+                break;
             }
+            continue;
         } else {
-            result.unshift(op);
+            result.unshift(token.value);
         }
     }
     return result.shift();

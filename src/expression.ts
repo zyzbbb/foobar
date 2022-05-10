@@ -1,8 +1,9 @@
-import {TRUE,isOp} from './constant';
+import {TRUE,isOp, Token, LBRACE, PLUS, MINUS, TIMES, DIVIDE, RBRACE} from './constant';
+import { Tokenizer } from './tokenizer';
 
 export function Expression(exp:string){
-    const symbols:string[] = [];
-    let operant:string[] = [];
+    const symbols:Token[] = [];
+    let operant:Token[] = [];
     let pointer = 0;
     let buffer = '';
     while(TRUE){
@@ -10,60 +11,60 @@ export function Expression(exp:string){
         const prev = exp[pointer-1];
         pointer = pointer + 1;
         if(/\s/.test(char))continue;
-        if(/[0-9]/.test(char)){
+        const token = Tokenizer(char);
+        if(!isOp(token)){
             buffer = buffer + char;
             continue;
         }else if(buffer !== ''){
-            operant.push(buffer);
+            operant.push(Tokenizer(buffer));
             buffer = '';
         }
 
-        if(char === undefined){
-            operant = operant.concat(symbols);
-            break;
-        }
+        if(char === undefined)break;
 
-        if(!isOp(char)){
-            throw new Error(`Unexpected ${char}`);
-        }
-
-        if(!/[0-9\s]+/.test(prev)){
+        if(isOp(Tokenizer(prev))){
             // - negative symbol
             // + positive symbol
-            if(char === '-' || char === '+'){
-                operant.push('0');
+            if(token.symbol === MINUS || token.symbol === PLUS){
+                operant.push(Tokenizer('0'));
             }
         }
 
-        if(char === '+' || char === '-'){
+        if(token.symbol === PLUS || token.symbol === MINUS){
             while(TRUE){
-                if(symbols[0] === '(' || symbols.length === 0)break;
-                const s = symbols.shift() as string;
+                if(symbols.length === 0)break;
+                if(symbols[0].symbol === LBRACE)break;
+                const s = symbols.shift() as Token;
                 operant.push(s);
             }
-            symbols.unshift(char);
+            symbols.unshift(token);
             continue;
         }
-        if(char === '*' || char === '/'){
-            if(symbols[0] === char){
-                const s = symbols.shift() as string;
-                operant.push(s);
+        if(token.symbol === TIMES || token.symbol === DIVIDE){
+            if(symbols.length){
+                if(symbols[0].priority >= token.priority){
+                    const s = symbols.shift() as Token;
+                    operant.push(s);
+                }
             }
-            symbols.unshift(char);
+            symbols.unshift(token);
             continue;
         }
-        if(char === '('){
-            symbols.unshift('(');
+        if(token.symbol === LBRACE){
+            symbols.unshift(token);
             continue;
         }
-        if(char === ')'){
+        if(token.symbol === RBRACE){
             while(TRUE){
-                const s = symbols.shift() as string;
-                if(s === '(')break;
+                const s = symbols.shift() as Token;
+                if(s.symbol === LBRACE)break;
                 operant.push(s);
             }
             continue;
         }
     }
+
+    operant = operant.concat(symbols);
+
     return operant;
 }

@@ -20,19 +20,24 @@ const exp = [
     '1+(0-5+3)*6',
     '1+(+5+3)*6',
     '100+(300-200)*100-300*300/600',
-    '1+($5+3)*6'
+    '"a"+"b"',
+    '1+"a"',
+    '"a"+1',
+    '"a"-1',
+    '1+($5+3)*6',
 ];
 
 exp.forEach(e=>{
+    const ep = Expression(e);
+    const result = Evaluator(ep);
     try {
-        const ep = Expression(e);
-        const result = Evaluator(ep);
-        const right = result === eval(e);
+        const right = (result === eval(e) || (isNaN(result) && isNaN(eval(e))));
         console.log(`${e}=${result}`, right);
         if(!right){
             console.log(ep);
         }
     } catch (error:any) {
-        console.error('%c%s','color:red',error.message);
+        console.error('%c%s,%s','color:red',error.message,e);
+        console.log(ep);
     }
 });
