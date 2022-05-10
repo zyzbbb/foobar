@@ -1,33 +1,36 @@
+import {TRUE,isOp} from './constant';
 
 export function Evaluator(operant:string[]){
     const result = [];
-    for(let i=0;i<operant.length;i++){
-        if(isOp(operant[i])){
-            const op1 = result.shift() as string;
-            const op2 = result.shift() as string;
-            if(operant[i] === '+'){
-                result.push(Number(op2) + Number(op1));
+    let i=0;
+    while(TRUE){
+        const op = operant[i];
+        i = i + 1;
+        if(op === undefined)break;
+        if(isOp(op)){
+            let op1 = result.shift() as number;
+            let op2 = result.shift() as number;
+            op1 = Number(op1);
+            op2 = Number(op2);
+            if(op === '+'){
+                result.unshift(op2+op1);
                 continue;
             }
-            if(operant[i] === '-'){
-                result.push(Number(op2) - Number(op1));
+            if(op === '-'){
+                result.unshift(op2-op1);
                 continue;
             }
-            if(operant[i] === '*'){
-                result.push(Number(op2) * Number(op1));
+            if(op === '*'){
+                result.unshift(op2*op1);
                 continue;
             }
-            if(operant[i] === '/'){
-                result.push(Number(op2) / Number(op1));
+            if(op === '/'){
+                result.unshift(op2/op1);
                 continue;
             }
         } else {
-            result.unshift(operant[i]);
+            result.unshift(op);
         }
     }
     return result.shift();
-}
-
-function isOp(char:string){
-    return char === '+' || char === '-' || char === '*' || char === '/';
 }

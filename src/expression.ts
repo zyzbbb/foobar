@@ -1,4 +1,4 @@
-const TRUE = true;
+import {TRUE,isOp} from './constant';
 
 export function Expression(exp:string){
     const symbols:string[] = [];
@@ -7,11 +7,16 @@ export function Expression(exp:string){
     let buffer = '';
     while(TRUE){
         const char = exp[pointer];
+        const prev = exp[pointer-1];
         pointer = pointer + 1;
+        if(char === undefined)break;
+        if(/\s/.test(char))continue;
         if(/[0-9]/.test(char)){
             buffer = buffer + char;
             continue;
-        }else if(buffer !== '') {
+        }else if(!isOp(char)){
+            throw new Error(`Unexpected ${char}`);
+        }else if(buffer !== ''){
             operant.push(buffer);
             buffer = '';
         }
@@ -19,14 +24,24 @@ export function Expression(exp:string){
             operant = operant.concat(symbols);
             break;
         }
+
+        if(!/[0-9]+/.test(prev)){
+            // - negative symbol
+            // + positive symbol
+            if(char === '-' || char === '+'){
+                operant.push('0');
+            }
+        }
+
         if(char === '+' || char === '-'){
-            const top = symbols[0];
-            if(top === '*' || top === '/'){
-                while(TRUE){
-                    const s = symbols.shift() as string;
-                    if(s === '(' || s === undefined)break;
-                    operant.push(s);
+            while(TRUE){
+                const s = symbols.shift();
+                if(s === undefined)break;
+                if(s === '('){
+                    symbols.unshift('(');
+                    break;
                 }
+                operant.push(s);
             }
             symbols.unshift(char);
             continue;
