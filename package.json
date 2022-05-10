@@ -4,7 +4,7 @@
   "description": "The terms foobar (/ˈfuːbɑːr/), foo, bar, baz, and others are used as metasyntactic variables and placeholder names in computer programming or computer-related documentation.[1] They have been used to name entities such as variables, functions, and commands whose exact identity is unimportant and serve only to demonstrate a concept.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node test/expression.ts"
   },
   "repository": {
     "type": "git",

@@ -1,41 +1,56 @@
+export type TokenValue = string|number;
+
 export interface Token{
-    symbol:string
-    value:string
+    symbol:number
+    value:TokenValue
     priority:number
 }
 
 
 export const TRUE = true;
 
-export const VALUE = 'value';
-export const PLUS = 'plus';
-export const MINUS = 'minus';
-export const TIMES = 'times';
-export const DIVIDE = 'divide';
-export const LPAREN = 'lparen';
-export const RPAREN = 'rparen';
-export const LBRACE = 'lbrace';
-export const RBRACE = 'rbrace';
-export const LBRACKET = 'lbracket';
-export const RBRACKET = 'rbracket';
 
-export const UNKNOWN = 'unknown';
+export const TVALUE = 100;
+export const TOPERATE = 110;
+export const TKEYWORD = 120;
 
+export const TPLUS = 501;
+export const TMINUS = 502;
+export const TMULTIPLY = 503;
+export const TDIVIDE = 504;
+export const TLPAREN = 505;
+export const TRPAREN = 506;
+export const TLBRACE = 507;
+export const TRBRACE = 508;
+export const TLBRACKET = 509;
+export const TRBRACKET = 510;
+export const TUNKNOWN = 511;
 
-export function isOp(token:Token){
-    return token.symbol !== VALUE;
+export function eval_err(err:string){
+    throw new Error(err);
 }
 
-export function isStr(value:unknown){
+export function is_operate(token:Token){
+    return token.symbol === TOPERATE;
+}
+
+export function is_unknown(token:Token){
+    return token.value === TUNKNOWN;
+}
+
+export function is_value(token:Token){
+    return token.symbol === TVALUE;
+}
+
+export function isStr(value:string){
     return /^("|')(.*?)\1$/.test(value as string);
 }
 
-export function convert(op:any):any{
-    if(isStr(op)){
-        return String(op.substring(1,op.length-1));
+export function convert_number(value:string):number{
+    const num =  Number(value);
+    if(isStr(value) || isNaN(num)){
+        eval_err(`Unexpected value:${value}`);
     }
-    if(isNaN(op)){
-        return '';
-    }
-    return Number(op);
+
+    return num;
 }

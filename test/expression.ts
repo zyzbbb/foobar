@@ -1,4 +1,5 @@
 import {Expression,Evaluator} from '../src';
+import { Tokenizer } from '../src/tokenizer';
 
 const exp = [
     '1+2',
@@ -20,22 +21,17 @@ const exp = [
     '1+(0-5+3)*6',
     '1+(+5+3)*6',
     '100+(300-200)*100-300*300/600',
-    '"a"+"b"',
-    '1+"a"',
-    '"a"+1',
-    '"a"-1',
-    '1+($5+3)*6',
+    '1234567+3453456',
+    '-45678+45677'
 ];
 
 exp.forEach(e=>{
-    const ep = Expression(e);
-    const result = Evaluator(ep);
+    const ep = Expression(new Tokenizer(e));
     try {
-        const right = (result === eval(e) || (isNaN(result) && isNaN(eval(e))));
+        const result = Evaluator(ep);
+        const right = result === eval(e);
         console.log(`${e}=${result}`, right);
-        if(!right){
-            console.log(ep);
-        }
+        if(!right)throw new Error('not equal');
     } catch (error:any) {
         console.error('%c%s,%s','color:red',error.message,e);
         console.log(ep);

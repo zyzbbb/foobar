@@ -1,4 +1,4 @@
-import {TRUE,isOp, Token, PLUS, MINUS, TIMES, DIVIDE, isStr, convert} from './constant';
+import {TRUE, Token, TPLUS, TMINUS, TMULTIPLY, TDIVIDE, convert_number, is_operate} from './constant';
 
 export function Evaluator(tokens:Token[]){
     const result = [];
@@ -7,24 +7,36 @@ export function Evaluator(tokens:Token[]){
         const token = tokens[i];
         i = i + 1;
         if(token === undefined)break;
-        if(isOp(token)){
-            let op1 = result.shift() as any;
-            let op2 = result.shift() as any;
-            op1 = convert(op1);
-            op2 = convert(op2);
-            switch(token.symbol){
-            case PLUS:
-                result.unshift(op2+op1);
+        if(is_operate(token)){
+            switch(Number(token.value)){
+            case TPLUS:
+            {
+                const right = convert_number(<string>result.shift());
+                const left = convert_number(<string>result.shift());
+                result.unshift(left+right);
                 break;
-            case MINUS:
-                result.unshift(op2-op1);
+            }
+            case TMINUS:
+            {
+                const right = convert_number(<string>result.shift());
+                const left = convert_number(<string>result.shift());
+                result.unshift(left-right);
                 break;
-            case TIMES:
-                result.unshift(op2*op1);
+            }
+            case TMULTIPLY:
+            {
+                const right = convert_number(<string>result.shift());
+                const left = convert_number(<string>result.shift());
+                result.unshift(left*right);
                 break;
-            case DIVIDE:
-                result.unshift(op2/op1);
+            }
+            case TDIVIDE:
+            {
+                const right = convert_number(<string>result.shift());
+                const left = convert_number(<string>result.shift());
+                result.unshift(left/right);
                 break;
+            }
             }
             continue;
         } else {

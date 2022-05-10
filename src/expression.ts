@@ -1,46 +1,36 @@
-import {TRUE,isOp, Token, LBRACE, PLUS, MINUS, TIMES, DIVIDE, RBRACE} from './constant';
+import {TRUE, Token, TMINUS, TPLUS, TLBRACE, TMULTIPLY, TDIVIDE, TRBRACE, is_operate, is_unknown} from './constant';
 import { Tokenizer } from './tokenizer';
 
-export function Expression(exp:string){
+export function Expression(tokenizer:Tokenizer){
     const symbols:Token[] = [];
     let operant:Token[] = [];
-    let pointer = 0;
-    let buffer = '';
-    while(TRUE){
-        const char = exp[pointer];
-        const prev = exp[pointer-1];
-        pointer = pointer + 1;
-        if(/\s/.test(char))continue;
-        const token = Tokenizer(char);
-        if(!isOp(token)){
-            buffer = buffer + char;
-            continue;
-        }else if(buffer !== ''){
-            operant.push(Tokenizer(buffer));
-            buffer = '';
-        }
+    while(tokenizer.valid()){
 
-        if(char === undefined)break;
+        const token = tokenizer.next(); 
 
-        if(isOp(Tokenizer(prev))){
+        if(is_operate(token)){
             // - negative symbol
             // + positive symbol
-            if(token.symbol === MINUS || token.symbol === PLUS){
-                operant.push(Tokenizer('0'));
+            if(
+                (token.value === TMINUS || token.value === TPLUS)
+                && (is_operate(tokenizer.prev()) || is_unknown(tokenizer.prev()))
+            ){
+                operant.push(tokenizer.token('0'));
             }
         }
 
-        if(token.symbol === PLUS || token.symbol === MINUS){
+        if(token.value === TPLUS || token.value === TMINUS){
             while(TRUE){
                 if(symbols.length === 0)break;
-                if(symbols[0].symbol === LBRACE)break;
+                if(symbols[0].value === TLBRACE)break;
                 const s = symbols.shift() as Token;
                 operant.push(s);
             }
             symbols.unshift(token);
             continue;
         }
-        if(token.symbol === TIMES || token.symbol === DIVIDE){
+
+        if(token.value === TMULTIPLY || token.value === TDIVIDE){
             if(symbols.length){
                 if(symbols[0].priority >= token.priority){
                     const s = symbols.shift() as Token;
@@ -50,18 +40,22 @@ export function Expression(exp:string){
             symbols.unshift(token);
             continue;
         }
-        if(token.symbol === LBRACE){
+
+        if(token.value === TLBRACE){
             symbols.unshift(token);
             continue;
         }
-        if(token.symbol === RBRACE){
+
+        if(token.value === TRBRACE){
             while(TRUE){
                 const s = symbols.shift() as Token;
-                if(s.symbol === LBRACE)break;
+                if(s.value === TLBRACE)break;
                 operant.push(s);
             }
             continue;
         }
+
+        operant.push(token);
     }
 
     operant = operant.concat(symbols);
