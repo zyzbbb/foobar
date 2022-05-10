@@ -17,8 +17,7 @@ exp.forEach(e=>{
     try {
         const ep = Expression(e);
         const result = Evaluator(ep);
-        console.log(`${e}=${result}`,eval(e));
-        console.log(ep);
+        console.log(`${e}=${result}`, result === eval(e));
     } catch (error:any) {
         console.error('%c%s','color:red',error.message);
     }

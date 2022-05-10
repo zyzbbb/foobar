@@ -9,20 +9,22 @@ export function Expression(exp:string){
         const char = exp[pointer];
         const prev = exp[pointer-1];
         pointer = pointer + 1;
-        if(char === undefined)break;
         if(/\s/.test(char))continue;
         if(/[0-9]/.test(char)){
             buffer = buffer + char;
             continue;
-        }else if(!isOp(char)){
-            throw new Error(`Unexpected ${char}`);
         }else if(buffer !== ''){
             operant.push(buffer);
             buffer = '';
         }
+
         if(char === undefined){
             operant = operant.concat(symbols);
             break;
+        }
+
+        if(!isOp(char)){
+            throw new Error(`Unexpected ${char}`);
         }
 
         if(!/[0-9]+/.test(prev)){
