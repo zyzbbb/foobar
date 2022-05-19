@@ -5,11 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-<<<<<<< HEAD
-    "dev": "ts-node index.ts"
-=======
-    "dev":"ts-node index.ts"
->>>>>>> ec7e0fe4ec8c29e1b90ba9176f2f956daa67f2cd
+    "dev": "nodemon index.ts"
   },
   "repository": {
     "type": "git",
@@ -22,6 +18,7 @@
   },
   "homepage": "https://github.com/zyzbbb/foobar#readme",
   "dependencies": {
+    "nodemon": "^2.0.16",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },

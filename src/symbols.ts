@@ -47,3 +47,5 @@ export const MULTI_COMMENT_SYMBOL = Symbol('multi comment');
 export const SPACE_SYMBOL = Symbol('space');
 
 export const KEYWORDS = ['var','function','if','while','for','return','break'];
+
+export const BUILDIN = ['print'];

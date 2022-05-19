@@ -1,4 +1,4 @@
-import {KEYWORDS} from './symbols';
+import {BUILDIN, KEYWORDS} from './symbols';
 
 export default class Token{
     private readonly _symbol:symbol;
@@ -30,6 +30,10 @@ export default class Token{
 
     isKeyword():boolean{
         return KEYWORDS.includes(this._value.trim());
+    }
+
+    isBuildInFunc():boolean{
+        return BUILDIN.includes(this._value.trim());
     }
 
     appendValue(s:string){

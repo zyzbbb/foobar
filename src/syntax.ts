@@ -11,9 +11,18 @@ export default class Syntax{
         const parens = [];
         const braces = [];
         const buckets = [];
+        const quotes = [];
         for(let i=0;i<this.tokens.length;i++){
             const token = this.tokens[i];
             if(token.symbol === symbols.SPACE_SYMBOL)continue;
+            if(token.symbol === symbols.DOUBLE_QUOTE_SYMBOL && this.tokens[i-1].symbol !== symbols.ANTI_SLASH_SYMBOL){
+                if(quotes.length === 0){
+                    quotes.push(token);
+                }else{
+                    quotes.pop();
+                }
+                continue;
+            }
             if(token.symbol === symbols.PAREN_LEFT_SYMBOL){
                 parens.push(token);
                 continue;
@@ -47,6 +56,11 @@ export default class Syntax{
                 buckets.pop();
                 continue;
             }
+            if(token.symbol === symbols.COMMA_SYMBOL){
+                if(this.previous(i).symbol !== symbols.IDENTIFIER_SYMBOL){
+                    this.syntaxError('unexpected token ,',token);
+                }
+            }
             if(token.symbol === symbols.IDENTIFIER_SYMBOL){
                 this.checkIdentifier(token,i);
             }
@@ -62,6 +76,10 @@ export default class Syntax{
 
         if(buckets.length !== 0){
             this.syntaxError('unexpected token [',buckets[0]);
+        }
+
+        if(quotes.length !== 0){
+            this.syntaxError('unexpected token "',quotes[0]);
         }
 
     }
@@ -83,6 +101,21 @@ export default class Syntax{
             this.syntaxError(`unexpected ${next.value}`,next);
         }
 
+        if(token.value === 'return'){
+            if(prev.symbol === symbols.IDENTIFIER_SYMBOL){
+                this.syntaxError(`unexpected ${token.value}`,token);
+            }
+            if(!this.expectNext(index,symbols.SIMCOLON_SYMBOL)){
+                this.syntaxError(`unexpected ${token.value}`,token);
+            }
+        }
+
+        if(token.value === 'var'){
+            if(next.symbol !== symbols.IDENTIFIER_SYMBOL){
+                this.syntaxError(`unexpected ${next.value}`,next);
+            }
+        }
+
         if(!token.isKeyword() && next.isKeyword()){
             this.syntaxError(`unexpected ${next.value}`,next);
         }
@@ -96,6 +129,16 @@ export default class Syntax{
             token = this.tokens[i];
         }
         return token;
+    }
+
+    private expectNext(index:number,symbol:symbol){
+        let i = index + 1;
+        let token = this.tokens[i];
+        for(;i<this.tokens.length;i++){
+            if(token.symbol === symbol)return true;
+            token = this.tokens[i];
+        }
+        return false;
     }
 
     private previous(index:number){
