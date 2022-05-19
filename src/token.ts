@@ -3,15 +3,15 @@ export default class Token{
     private readonly _row:number;
     private readonly _col:number;
     private _value:string;
-    constructor(symbol:symbol,row:number,col:number,value?:string){
-       this._symbol = symbol;
-       this._row = row;
-       this._col = col;
-       this._value = value;
+    constructor(symbol:symbol,row:number,col:number,value=''){
+        this._symbol = symbol;
+        this._row = row;
+        this._col = col;
+        this._value = value;
     }
 
     get symbol():symbol{
-        return this.symbol;
+        return this._symbol;
     }
 
     get row():number{
@@ -27,6 +27,6 @@ export default class Token{
     }
 
     appendValue(s:string){
-       this._value = this._value + s;
+        this._value = this._value + s;
     }
 }

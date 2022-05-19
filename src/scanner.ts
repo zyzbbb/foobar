@@ -9,12 +9,12 @@ export default class Scanner{
     private row:number;
     private col:number;
     constructor(code:string){
-       this.sourceCode = code;
-       this.currentToken = new Token(symbols.IDENTIFIER_SYMBOL,0,0);
-       this.tokens = [];
-       this.buffer = '';
-       this.row = 0;
-       this.col = 0;
+        this.sourceCode = code;
+        this.currentToken = new Token(symbols.IDENTIFIER_SYMBOL,0,0);
+        this.tokens = [];
+        this.buffer = '';
+        this.row = 0;
+        this.col = 0;
     }
 
     scan(){
@@ -87,21 +87,41 @@ export default class Scanner{
 
             if(char === ' '){
                 this.save();
+                this.currentToken = new Token(symbols.SPACE_SYMBOL,this.row,this.col);
                 continue;
             }
 
-            this.save();
+            if(char === '='){
+                this.save();
+                this.currentToken = new Token(symbols.ASSIGNMENT_SYMBOL,this.row,this.col);
+                continue;
+            }
+
+            if(char === ';'){
+                this.save();
+                this.currentToken = new Token(symbols.SIMCOLON_SYMBOL,this.row,this.col);
+                continue;
+            }
+
+            if(char === '"'){
+                this.save();
+                this.currentToken = new Token(symbols.DOUBLE_QUOTE_SYMBOL,this.row,this.col);
+                continue;
+            }
 
             if(this.currentToken.symbol !== symbols.IDENTIFIER_SYMBOL){
+                this.save();
                 this.currentToken = new Token(symbols.IDENTIFIER_SYMBOL,this.row,this.col);
             }
 
             this.currentToken.appendValue(char);
         }
+
+        return this.tokens;
     }
 
     private save(){
         this.tokens.push(this.currentToken);
-       this.buffer = '';
+        this.buffer = '';
     }
 }
