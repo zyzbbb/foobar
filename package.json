@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+<<<<<<< HEAD
     "dev": "ts-node index.ts"
+=======
+    "dev":"ts-node index.ts"
+>>>>>>> ec7e0fe4ec8c29e1b90ba9176f2f956daa67f2cd
   },
   "repository": {
     "type": "git",
