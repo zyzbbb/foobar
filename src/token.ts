@@ -1,7 +1,9 @@
+import {KEYWORDS} from './symbols';
+
 export default class Token{
     private readonly _symbol:symbol;
-    private readonly _row:number;
-    private readonly _col:number;
+    private _row:number;
+    private _col:number;
     private _value:string;
     constructor(symbol:symbol,row:number,col:number,value=''){
         this._symbol = symbol;
@@ -26,7 +28,12 @@ export default class Token{
         return this._value;
     }
 
+    isKeyword():boolean{
+        return KEYWORDS.includes(this._value.trim());
+    }
+
     appendValue(s:string){
         this._value = this._value + s;
+        this._col = this._col + 1;
     }
 }

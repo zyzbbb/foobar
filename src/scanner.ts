@@ -35,115 +35,115 @@ export default class Scanner{
 
             if(char === '('){
                 this.save();
-                this.currentToken = new Token(symbols.PAREN_LEFT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.PAREN_LEFT_SYMBOL,this.row,this.col,'(');
                 continue;
             }
 
             if(char === ')'){
                 this.save();
-                this.currentToken = new Token(symbols.PAREN_RIGHT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.PAREN_RIGHT_SYMBOL,this.row,this.col,')');
                 continue;
             }
 
             if(char === '{'){
                 this.save();
-                this.currentToken = new Token(symbols.BRACE_LEFT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.BRACE_LEFT_SYMBOL,this.row,this.col,'{');
                 continue;
             }
 
             if(char === '}'){
                 this.save();
-                this.currentToken = new Token(symbols.BRACE_RIGHT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.BRACE_RIGHT_SYMBOL,this.row,this.col,'}');
                 continue;
             }
 
             if(char === '['){
                 this.save();
-                this.currentToken = new Token(symbols.BUCKET_LEFT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.BUCKET_LEFT_SYMBOL,this.row,this.col,'[');
                 continue;
             }
 
             if(char === ']'){
                 this.save();
-                this.currentToken = new Token(symbols.BUCKET_RIGHT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.BUCKET_RIGHT_SYMBOL,this.row,this.col,']');
                 continue;
             }
 
             if(char === '+'){
                 this.save();
-                this.currentToken = new Token(symbols.PLUS_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.PLUS_SYMBOL,this.row,this.col,'+');
                 continue;
             }
 
             if(char === '-'){
                 this.save();
-                this.currentToken = new Token(symbols.MINUS_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.MINUS_SYMBOL,this.row,this.col,'-');
                 continue;
             }
 
             if(char === '*'){
                 this.save();
-                this.currentToken = new Token(symbols.MUTIPLY_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.MUTIPLY_SYMBOL,this.row,this.col,'*');
                 continue;
             }
 
             if(char === '/'){
                 this.save();
-                this.currentToken = new Token(symbols.SLASH_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.SLASH_SYMBOL,this.row,this.col,'/');
                 continue;
             }
 
             if(char === '\\'){
                 this.save();
-                this.currentToken = new Token(symbols.ANTI_SLASH_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.ANTI_SLASH_SYMBOL,this.row,this.col,'\\');
                 continue;
             }
 
             if(char === '%'){
                 this.save();
-                this.currentToken = new Token(symbols.PERCENT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.PERCENT_SYMBOL,this.row,this.col,'%');
                 continue;
             }
 
             if(char === '='){
                 this.save();
-                this.currentToken = new Token(symbols.ASSIGNMENT_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.ASSIGNMENT_SYMBOL,this.row,this.col,'=');
                 continue;
             }
 
             if(char === ';'){
                 this.save();
-                this.currentToken = new Token(symbols.SIMCOLON_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.SIMCOLON_SYMBOL,this.row,this.col,';');
                 continue;
             }
 
             if(char === '"'){
                 this.save();
-                this.currentToken = new Token(symbols.DOUBLE_QUOTE_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.DOUBLE_QUOTE_SYMBOL,this.row,this.col,'"');
                 continue;
             }
 
             if(char === '>'){
                 this.save();
-                this.currentToken = new Token(symbols.MORETAHN_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.MORETAHN_SYMBOL,this.row,this.col,'>');
                 continue;
             }
 
             if(char === '<'){
                 this.save();
-                this.currentToken = new Token(symbols.LESSTHAN_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.LESSTHAN_SYMBOL,this.row,this.col,'<');
                 continue;
             }
 
             if(char === '!'){
                 this.save();
-                this.currentToken = new Token(symbols.EXCLAMATION_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.EXCLAMATION_SYMBOL,this.row,this.col,'!');
                 continue;
             }
 
             if(char === ','){
                 this.save();
-                this.currentToken = new Token(symbols.EXCLAMATION_SYMBOL,this.row,this.col);
+                this.currentToken = new Token(symbols.COMMA_SYMBOL,this.row,this.col,',');
                 continue;
             }
 
